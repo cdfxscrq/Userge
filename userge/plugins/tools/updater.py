@@ -24,9 +24,8 @@ CHANNEL = userge.getCLogger(__name__)
         '-pull': "pull updates",
         '-push': "push updates to heroku",
         '-master': "select master branch",
-        '-beta': "select beta branch",
-        '-alpha': "select alpha branch"},
-    'usage': "{tr}update : check updates from default branch\n"
+        '-beta': "select beta branch"},
+    'usage': "{tr}update : check updates from master branch\n"
              "{tr}update -[branch_name] : check updates from any branch\n"
              "add -pull if you want to pull updates\n"
              "add -push if you want to push updates to heroku",
@@ -49,6 +48,11 @@ async def check_update(message: Message):
         flags.remove("push")
     if len(flags) == 1:
         branch = flags[0]
+        dev_branch = "alpha"
+        if branch == dev_branch:
+            await message.err('Can\'t update to unstable [alpha] branch. '
+                              'Please use other branches instead !')
+            return
     repo = Repo()
     if branch not in repo.branches:
         await message.err(f'invalid branch name : {branch}')
@@ -103,7 +107,7 @@ def _get_updates(repo: Repo, branch: str) -> str:
 async def _pull_from_repo(repo: Repo, branch: str) -> None:
     repo.git.checkout(branch, force=True)
     repo.git.reset('--hard', branch)
-    repo.git.pull(Config.UPSTREAM_REMOTE, branch, force=True)
+    repo.remote(Config.UPSTREAM_REMOTE).pull(branch, force=True)
     await asyncio.sleep(1)
 
 
