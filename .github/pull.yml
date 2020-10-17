@@ -2,11 +2,11 @@ version: "1"
 rules:
   - base: alpha
     upstream: UsergeTeam:alpha
-    mergeMethod: rebase
+    mergeMethod: merge
     mergeUnstable: false
   - base: beta
     upstream: UsergeTeam:beta
-    mergeMethod: rebase
+    mergeMethod: merge
   - base: master
     upstream: UsergeTeam:master
-    mergeMethod: rebase
+    mergeMethod: merge
