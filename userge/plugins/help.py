@@ -410,4 +410,26 @@ if userge.has_bot:
                         reply_markup=InlineKeyboardMarkup(prvte_msg)
                     )
                 )
+            elif "pmpermit" in inline_query.query:
+                owner = await userge.get_me()
+                pm_inline_msg = await SAVED_SETTINGS.find_one({'_id': 'CUSTOM_INLINE_PM_MESSAGE'})
+                if pm_inline_msg:
+                    text = pm_inline_msg.get('data')
+                else:
+                    text = f"Hello, welcome to **{owner.first_name}** Dm.\n\nWhat you want to do ?"
+                buttons = [[
+                    InlineKeyboardButton(
+                        "Contact Me", callback_data="pm_contact"),
+                    InlineKeyboardButton(
+                        "Spam here", callback_data="pm_spam")]]
+                results.append(
+                    InlineQueryResultArticle(
+                        id=uuid4(),
+                        title="Pm Permit",
+                        input_message_content=InputTextMessageContent(text),
+                        description="Inline Pm Permit Handler",
+                        thumb_url="https://imgur.com/download/Inyeb1S",
+                        reply_markup=InlineKeyboardMarkup(buttons)
+                    )
+                )
         await inline_query.answer(results=results, cache_time=3)

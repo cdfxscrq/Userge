@@ -342,6 +342,7 @@ async def slap_(message: Message):
 
 @userge.on_cmd("(yes|no|maybe|decide)$", about={
     'header': "Make a quick decision",
+    'flags': {'-gif': "for gif"},
     'examples': ['{tr}decide', '{tr}yes', '{tr}no', '{tr}maybe']}, name="decide")
 async def decide_(message: Message):
     """decide"""
@@ -353,14 +354,18 @@ async def decide_(message: Message):
         r = requests.get("https://yesno.wtf/api").json()
     path = wget.download(r["image"])
     chat_id = message.chat.id
-    message_id = None
-    if message.reply_to_message:
-        message_id = message.reply_to_message.message_id
+    message_id = message.reply_to_message.message_id if message.reply_to_message else None
     await message.delete()
-    await message.client.send_photo(chat_id=chat_id,
-                                    photo=path,
-                                    caption=str(r["answer"]).upper(),
-                                    reply_to_message_id=message_id)
+    if '-gif' in message.flags:
+        await message.client.send_animation(chat_id=chat_id,
+                                            animation=path,
+                                            caption=str(r["answer"]).upper(),
+                                            reply_to_message_id=message_id)
+    else:
+        await message.client.send_photo(chat_id=chat_id,
+                                        photo=path,
+                                        caption=str(r["answer"]).upper(),
+                                        reply_to_message_id=message_id)
     os.remove(path)
 
 
@@ -461,11 +466,11 @@ async def owo_(message: Message):
     if not input_str:
         await message.edit("` UwU no text given! `")
         return
-    reply_text = sub(r"(r|l)", "w", input_str)
-    reply_text = sub(r"(R|L)", "W", reply_text)
+    reply_text = sub(r"([rl])", "w", input_str)
+    reply_text = sub(r"([RL])", "W", reply_text)
     reply_text = sub(r"n([aeiou])", r"ny\1", reply_text)
     reply_text = sub(r"N([aeiouAEIOU])", r"Ny\1", reply_text)
-    reply_text = sub(r"\!+", " " + choice(UWUS), reply_text)
+    reply_text = sub(r"!", " " + choice(UWUS), reply_text)
     reply_text = reply_text.replace("ove", "uv")
     reply_text += " " + choice(UWUS)
     await message.edit(reply_text)
