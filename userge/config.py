@@ -46,6 +46,7 @@ class Config:
     CUSTOM_PACK_NAME = os.environ.get("CUSTOM_PACK_NAME")
     UPSTREAM_REPO = os.environ.get("UPSTREAM_REPO")
     UPSTREAM_REMOTE = os.environ.get("UPSTREAM_REMOTE")
+    USERGE_ANTISPAM_API = os.environ.get("USERGE_ANTISPAM_API")
     SPAM_WATCH_API = os.environ.get("SPAM_WATCH_API")
     CURRENCY_API = os.environ.get("CURRENCY_API")
     OCR_SPACE_API_KEY = os.environ.get("OCR_SPACE_API_KEY")
@@ -53,6 +54,7 @@ class Config:
     REMOVE_BG_API_KEY = os.environ.get("REMOVE_BG_API_KEY")
     WEATHER_DEFCITY = os.environ.get("WEATHER_DEFCITY")
     TZ_NUMBER = os.environ.get("TZ_NUMBER", 1)
+    MAX_DURATION = int(os.environ.get("MAX_DURATION", 900))
     G_DRIVE_CLIENT_ID = os.environ.get("G_DRIVE_CLIENT_ID")
     G_DRIVE_CLIENT_SECRET = os.environ.get("G_DRIVE_CLIENT_SECRET")
     G_DRIVE_PARENT_ID = os.environ.get("G_DRIVE_PARENT_ID")
@@ -64,6 +66,7 @@ class Config:
     HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME")
     G_DRIVE_IS_TD = os.environ.get("G_DRIVE_IS_TD") == "true"
     LOAD_UNOFFICIAL_PLUGINS = os.environ.get("LOAD_UNOFFICIAL_PLUGINS") == "true"
+    ASSERT_SINGLE_INSTANCE = os.environ.get("ASSERT_SINGLE_INSTANCE") == "true"
     THUMB_PATH = DOWN_PATH + "thumb_image.jpg"
     TMP_PATH = "userge/plugins/temp/"
     MAX_MESSAGE_LENGTH = 4096

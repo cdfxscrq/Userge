@@ -22,7 +22,7 @@ from hachoir.parser import createParser
 from pyrogram.errors.exceptions import FloodWait
 
 from userge import userge, Config, Message
-from userge.utils import progress, take_screen_shot, humanbytes
+from userge.utils import sort_file_name_key, progress, take_screen_shot, humanbytes
 from userge.utils.exceptions import ProcessCanceled
 from userge.plugins.misc.download import tg_download, url_download
 
@@ -126,7 +126,7 @@ async def upload_path(message: Message, path: Path, del_path: bool):
             if _path.is_file() and _path.stat().st_size:
                 file_paths.append(_path)
             elif _path.is_dir():
-                for i in sorted(_path.iterdir()):
+                for i in sorted(_path.iterdir(), key=lambda a: sort_file_name_key(a.name)):
                     explorer(i)
         explorer(path)
     else:
@@ -150,7 +150,7 @@ async def upload(message: Message, path: Path, del_path: bool = False,
     if 'wt' in message.flags:
         with_thumb = False
     if path.name.lower().endswith(
-            (".mkv", ".mp4", ".webm")) and ('d' not in message.flags):
+            (".mkv", ".mp4", ".webm", ".m4v")) and ('d' not in message.flags):
         await vid_upload(message, path, del_path, extra, with_thumb)
     elif path.name.lower().endswith(
             (".mp3", ".flac", ".wav", ".m4a")) and ('d' not in message.flags):
